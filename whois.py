@@ -1,8 +1,26 @@
 # -*- coding: utf-8 -*-
+import socket, re, sys
+import net
+
+def whois_request(domain, server, port=43):
+	sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	print(domain)
+	print(server)
+	print(port)
+	sock.connect((server, port))
+	sock.send(("%s\r\n" % domain).encode("utf-8"))
+	buff = b""
+	while True:
+		data = sock.recv(1024)
+		if len(data) == 0:
+			break
+		buff += data
+	print buff;
+	return buff.decode("utf-8")
 
 def get_server(suffix = ''):
     suffixs = {
-        'com': 'whois.internic.net',
+        'com': 'whois.verisign-grs.com',
         'net': 'whois.internic.net',
         'cn': 'whois.cnnic.net.cn',
         'cc': 'whois.nic.cc'
@@ -18,7 +36,7 @@ def get_suffix(domain = ''):
         return domainSplit[1]
     return ''
 
-def get_whois(domain = '', timeout = 1):
+def get_whois(domain = '', timeout = 30):
     data = {'success': 0, 'code': 0, 'info': ''}
     suffix = get_suffix(domain)
     if not suffix:
@@ -31,12 +49,12 @@ def get_whois(domain = '', timeout = 1):
         data['info'] = 'Not find a server'
         return data
 
-    import socket
-    socket.setdefaulttimeout(timeout)
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.settimeout(timeout)
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     try:
-        s.connect((server, 43))
+        ret = s.connect((server, 43))
+	print ret;
     except:
         s.close()
         data['code'] = 500
@@ -63,7 +81,9 @@ def get_whois(domain = '', timeout = 1):
     return data
 
 def get_reginfo(domain = ''):
-    data = get_whois(domain)
+    #data = get_whois(domain)
+    server = 'whois.verisign-grs.com'
+    data = whois_request(domain, )
     if not data['success']:
         return data
     suffix = get_suffix(domain)
@@ -138,6 +158,7 @@ if __name__ == '__main__':
             if not domain:
                 sys.exit(0)
             whois = get_whois(domain)
+            whois = net.get_whois_raw(domain)
             print whois['info'].decode('utf-8').encode(sys.getfilesystemencoding())
     else:
         print 'Not a valiable command'
