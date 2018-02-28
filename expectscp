@@ -1,0 +1,9 @@
+#!/usr/bin/expect -f
+set filename [lindex $argv 0]
+set timeout -1
+spawn scp $filename myusername@192.168.1.123:/home/myusername/
+set pass "mypassword"
+expect {
+        password: {send "$pass\r" ; exp_continue}
+        eof exit
+}
