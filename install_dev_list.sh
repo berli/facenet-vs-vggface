@@ -11,7 +11,7 @@ cd protobuf-*
 ./configure;make;sudo make install
 
 wget https://dl.bintray.com/boostorg/release/1.67.0/source/boost_1_67_0.tar.bz2;tar xjf boost_1_67_*;cd boost_*;
-./bootstrap.sh;./b2;./b2 install
+./bootstrap.sh;./b2;sudo ./b2 install
 
 cd ..
 git clone  https://github.com/BVLC/caffe.git
