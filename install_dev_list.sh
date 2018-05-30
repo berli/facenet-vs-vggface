@@ -5,6 +5,15 @@ git clone https://github.com/tensorflow/tensorflow.git
 #for caffe
 sudo apt-get install  libleveldb-dev libsnappy-dev libopencv-dev libhdf5-serial-dev libatlas-base-dev libopenblas-dev libgflags-dev libgoogle-glog-dev liblmdb-dev
 sudo apt-get install --no-install-recommends libboost-all-dev 
+wget https://github.com/google/protobuf/releases/download/v2.6.1/protobuf-2.6.1.tar.bz2
+tar xjf protobuf-2.6.1.tar.bz2
+cd protobuf-*
+./configure;make;sudo make install
+
+wget https://dl.bintray.com/boostorg/release/1.67.0/source/boost_1_67_0.tar.bz2;tar xjf boost_1_67_*;cd boost_*;
+./bootstrap.sh;./b2;./b2 install
+
+cd ..
 git clone  https://github.com/BVLC/caffe.git
 
 #for opencv
