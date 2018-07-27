@@ -35,13 +35,8 @@ with tf.Session() as sess:
 
         #通过sess.run执行初始化
         sess.run(train_step, feed_dict);
-        print 'step:{0}, loss:{1}'.format(step, sess.run(lost, feed_dict))
-        print 'w: %f' %sess.run(w)
-        print 'b: %f' %sess.run(b)
-        if( step % 20 == 0):
+        if( step % 50 == 0):
             print 'step:{0}, loss:{1}'.format(step, sess.run(lost, feed_dict))
-            print 'w: %f' %sess.run(w)
-            print 'b: %f' %sess.run(b)
             if(sess.run(lost, feed_dict) < 0.00001 or step > 3000):
                 print ' '
                 print 'final loss is:{}'.format(sess.run(lost, feed_dict))
