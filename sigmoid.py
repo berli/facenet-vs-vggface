@@ -32,8 +32,8 @@ ax.yaxis.set_ticks_position('left')
 ax.spines['left'].set_position(('data',0))
 ax.set_yticks([-1,-0.9,-0.7,-0.5,-0.3,-0.1,0.1,0.3,0.5,0.7,0.9,1])
  
-plt.plot(x,y,label="Sigmoid",color = "red")
-#plt.plot(2*x,tanh,label="Tanh", color = "blue")
+#plt.plot(x,y,label="Sigmoid",color = "red")
+plt.plot(2*x,tanh,label="Tanh", color = "blue")
 plt.legend()
 plt.show()
 
