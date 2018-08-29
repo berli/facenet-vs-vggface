@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-)
 import json
 import re
-
+import os
 import requests
 
 class Xima(object):
@@ -43,16 +43,35 @@ class Xima(object):
     def save(self, all_list):
         """保存每一本书到本地"""
         # 遍历每一个音频, 然后保存
+        local = self.getLocal();
+        #for k,v in  local.items():
+        #    print k
         for i in all_list:
             print(i)
             # {'src': 'http://audio.xmcdn.com/group44/M01/67/B4/wKgKkVss32fCcK5xAIMTfNZL0Fo411.m4a', 'name': '到日本投资民宿还能挣钱吗？'}
             i['name'] = re.sub('"', '', i['name'])  # 有些名字里面会带有", 这个时候, 因为转义的问题, 程序会报错, 所有我们得把"替换成空白,
+            fname = self.book_name + i['name'].encode('utf-8')
+            fname = fname+'.m4a'
+            print fname
+            if(fname in  local):
+                print '已经下载'
+                continue;
+
             with open(r'xima/{}.m4a'.format(self.book_name + i['name'].encode('utf-8')), 'ab') as f:
                 print 'downloading:',self.book_name + i['name'].encode('utf-8')
                 r = requests.get(i['src'], headers=self.headers)
                 ret = r.content
                 # 获取到音频的二进制文件保存起来才是音频文件
                 f.write(ret)
+
+    def getLocal(self):
+        files = os.listdir('xima')
+        flist = {}
+        for file in files: #遍历文件夹
+            if not os.path.isdir(file): #判断是否是文件夹
+                flist[file] = "";
+
+        return flist;
 
     def run(self):
         """运行方法"""
