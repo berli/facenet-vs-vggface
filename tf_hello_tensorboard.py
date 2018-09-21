@@ -65,6 +65,8 @@ with tf.Session() as sess:
     
         #通过选取的样本更新神经网络并更新参数
         sess.run(train_step, feed_dict={x: X[start:end], y_:Y[start:end]})
+
+        #tensorboard信息更新
         if(i % 500 == 0):
             #每隔一段时间计算所有数据上的loss并输出
             total_cross_entry, summary = sess.run([loss, summary_op], feed_dict={x:X, y_:Y})
