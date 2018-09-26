@@ -8,6 +8,7 @@ from sklearn.linear_model import LogisticRegression
  
 #载入数据集
 iris = load_iris()         
+print iris
 X = X = iris.data[:, :2]   #获取花卉两列数据集
 Y = iris.target           
  
