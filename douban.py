@@ -4,6 +4,7 @@ import urllib2
 import time
 from bs4 import BeautifulSoup
 import sys
+import random
 reload(sys) 
 sys.setdefaultencoding('utf-8')
 
@@ -13,7 +14,7 @@ def get_article_link(url):
     res = response.read()
     bsObj = BeautifulSoup(res, 'html.parser')
     links = bsObj.find_all('a')
-    articles = []
+    articles = {}
     max = 0;
     for link in links:
         l = str(link.get('href'))
@@ -21,7 +22,9 @@ def get_article_link(url):
         #print 'urls:',urls
         #print 'type(l):',type(l)
         if( l.find('/ebook/') == 0):
-            articles.append('https://read.douban.com/'+l)
+            articles['https://read.douban.com/'+l]='1'
+        if( l.find('https://read.douban.com/column/') == 0):
+            articles[l] = "1"
         elif( l.find('?start=') == 0):
             pos = l.find('?start=')
             pos1 = l.find('&', pos)
@@ -43,10 +46,30 @@ def get_article(url):
         print 'title:', read.text
         line = read.text.encode("utf-8")
         line +=','
-    for read in  bsObj.find_all('span', class_='read-count'):
-        print 'read-count:', read.text.split()[0]
-        line += read.text.split()[0];
+    #专栏
+    special = False;
+    if(len(line) == 0):
+        for read in  bsObj.find_all('h1', class_='title-wrapper'):
+            print 'specail title:', read.text
+            line = read.text.replace('\n','').encode("utf-8")
+            line +=','
+            special = True;
+
+    if( not special):
+        for read in  bsObj.find_all('span', class_='read-count'):
+            print 'read-count:', read.text.split()[0]
+            line += read.text.split()[0];
+            line +=','
+    else:
+        #专栏
+        special_count = 0;
+        for read in  bsObj.find_all('span', class_='count'):
+            cnt = int(read.text.replace(',',''))
+            if(cnt > special_count):
+                special_count = cnt
+        line += str(special_count)
         line +=','
+        print 'specail read-count:', special_count
 
     flag = False
     for read in  bsObj.find_all('span', class_='score'):
@@ -77,19 +100,31 @@ if __name__ == '__main__':
             page_url.append(cur_url)
             #print 'page_url:',page_url
 
-    f = open('article.txt', 'w')
+
+    now = time.time()
+    day = time.strftime("%Y-%m-%d", time.localtime(now))
+    title ='article_' + day + '.txt'
+
+#sudo pip install BeautifulSoup4 lxml
+    f = open(title, 'w')
     while True:
         for url in page_url:
             temp={}
-            for article in links:
+            for article,v in links.items():
                 print 'article:',article
                 line = get_article(article)
                 temp[line] = '1'
                 print 'temp:',temp
 
+                #防止被封IP
+                stop = random.randint(2,10)
+                print 'sleep:',stop
+                time.sleep(stop)
+
             for line,v in temp.items():
                 if( len(line) > 0):
                     f.write(line+'\n')
+                    f.flush()
             print 'get url:',url
             links,max = get_article_link(url)
 
