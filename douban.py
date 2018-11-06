@@ -24,8 +24,16 @@ def get_article_link(url):
         #print 'type(l):',type(l)
         if( l.find('/ebook/') == 0):
             articles['https://read.douban.com/'+l]='1'
+        if( l.find('/kind/0/') == 0 or l.find('/kind/500/') == 0):
+            print '跳过全部:',l
+            time.sleep(5);
+            continue;
         if( l.find('/kind/') == 0):
+            print 'l:',l
             for bs in bsObj.find_all('a', {'href':l}, class_='title active'):
+                print 'active_kind_title:', bs.text
+                kind['https://read.douban.com'+l] = bs.text
+            for bs in bsObj.find_all('a', {'href':l}, class_='title'):
                 print 'kind_title:', bs.text
                 kind['https://read.douban.com'+l] = bs.text
         if( l.find('https://read.douban.com/column/') == 0):
@@ -199,7 +207,7 @@ if __name__ == '__main__':
                 kind = url[pos+len('/kind/'):pos1-1]
             print 'current kind:',kind
 
-        get_kind(kind, v);
+            get_kind(kind, v);
 
-        time.sleep(24*3600)
+    time.sleep(3600)
 
