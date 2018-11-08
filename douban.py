@@ -8,6 +8,30 @@ import random
 reload(sys) 
 sys.setdefaultencoding('utf-8')
 
+import socket
+ 
+_dnscache={}
+def _setDNSCache():
+    """
+    Makes a cached version of socket._getaddrinfo to avoid subsequent DNS requests.
+    """
+ 
+    def _getaddrinfo(*args, **kwargs):
+        global _dnscache
+        if args in _dnscache:
+            print str(args)+" in cache"
+            return _dnscache[args]
+ 
+        else:
+            print str(args)+" not in cache"  
+            _dnscache[args] = socket._getaddrinfo(*args, **kwargs)
+            return _dnscache[args]
+ 
+    if not hasattr(socket, '_getaddrinfo'):
+        socket._getaddrinfo = socket.getaddrinfo
+        socket.getaddrinfo = _getaddrinfo
+ 
+
 def get_article_link(url):
 
     response = urllib2.urlopen(url)
@@ -169,7 +193,7 @@ def get_kind(kind, kind_title):
             print 'temp:',temp
 
             #防止被封IP
-            stop = random.randint(2,10)
+            stop = random.randint(1, 5)
             print 'sleep:',stop
             time.sleep(stop)
 
@@ -186,6 +210,7 @@ if __name__ == '__main__':
     url = "https://read.douban.com/kind/532?start=0&sort=hot&promotion_only=False&min_price=None&max_price=None&works_type=None"
     get_url = "https://read.douban.com/kind/532?start={0:d}&sort=hot&promotion_only=False&min_price=None&max_price=None&works_type=None"
     
+    _setDNSCache()
     links,max, kind_url = get_article_link(url)
     page_url =[]
     
@@ -209,5 +234,5 @@ if __name__ == '__main__':
 
             get_kind(kind, v);
 
-    time.sleep(3600)
+    time.sleep(600)
 
