@@ -1,0 +1,5 @@
+《深度学习：21天实战Caffe》配书资料下载地址。
+
+码云：https://gitee.com/yongkezhao/PracticeCaffeIn21Days
+
+github：https://github.com/zhaoyongke/Caffe21Days

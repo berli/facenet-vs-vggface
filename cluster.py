@@ -2,9 +2,9 @@
 import numpy as np
 import tensorflow as tf
 
-#python example.py --ps_hosts=127.0.0.1:2222 --worker_hosts=127.0.0.1:2224,127.0.0.1:2225 --job_name=ps --task_index=0
-#python example.py --ps_hosts=127.0.0.1:2222 --worker_hosts=127.0.0.1:2224,127.0.0.1:2225 --job_name=worker --task_index=0
-#python example.py --ps_hosts=127.0.0.1:2222 --worker_hosts=127.0.0.1:2224,127.0.0.1:2225 --job_name=worker --task_index=1
+#python cluster.py --ps_hosts=127.0.0.1:2222 --worker_hosts=127.0.0.1:2224,127.0.0.1:2225 --job_name=ps --task_index=0
+#python cluster.py --ps_hosts=127.0.0.1:2222 --worker_hosts=127.0.0.1:2224,127.0.0.1:2225 --job_name=worker --task_index=0 
+#python cluster.py --ps_hosts=127.0.0.1:2222 --worker_hosts=127.0.0.1:2224,127.0.0.1:2225 --job_name=worker --task_index=1 
 
 # Define parameters
 FLAGS = tf.app.flags.FLAGS
@@ -19,12 +19,14 @@ tf.app.flags.DEFINE_string("worker_hosts", "",
                            "Comma-separated list of hostname:port pairs")
 tf.app.flags.DEFINE_string("job_name", "", "One of 'ps', 'worker'")
 tf.app.flags.DEFINE_integer("task_index", 0, "Index of task within the job")
+tf.app.flags.DEFINE_integer("gpu_num", 1, "number of GPU for the job")
 
 # Hyperparameters
 learning_rate = FLAGS.learning_rate
 steps_to_validate = FLAGS.steps_to_validate
 
 def main(_):
+  
   ps_hosts = FLAGS.ps_hosts.split(",")
   worker_hosts = FLAGS.worker_hosts.split(",")
   cluster = tf.train.ClusterSpec({"ps": ps_hosts, "worker": worker_hosts})
@@ -48,7 +50,7 @@ def main(_):
       loss_value = loss(label, pred)
 
       train_op = tf.train.GradientDescentOptimizer(learning_rate).minimize(loss_value, global_step=global_step)
-      init_op = tf.initialize_all_variables()
+      init_op = tf.global_variables_initializer()
 
       saver = tf.train.Saver()
       tf.summary.scalar('cost', loss_value)

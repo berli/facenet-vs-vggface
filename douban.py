@@ -52,16 +52,18 @@ def get_article_link(url):
             print '跳过全部:',l
             time.sleep(5);
             continue;
+        active_title = ""
         if( l.find('/kind/') == 0):
             print 'l:',l
             for bs in bsObj.find_all('a', {'href':l}, class_='title active'):
                 print 'active_kind_title:', bs.text
+                active_title = bs.text
                 kind['https://read.douban.com'+l] = bs.text
             for bs in bsObj.find_all('a', {'href':l}, class_='title'):
                 print 'kind_title:', bs.text
                 kind['https://read.douban.com'+l] = bs.text
         if( l.find('https://read.douban.com/column/') == 0):
-            articles[l] = "1"
+            articles[l] = active_title
         elif( l.find('?start=') == 0):
             pos = l.find('?start=')
             pos1 = l.find('&', pos)
@@ -220,6 +222,31 @@ if __name__ == '__main__':
             page_url.append(cur_url)
             #print 'page_url:',page_url
 
+    temp={}
+    kind_title = ""
+    #爬取一篇文章的内容
+    for article,v in links.items():
+        print 'article:',article
+        line = get_article(article)
+        temp[line] = '1'
+        print 'temp:',temp
+
+        kind_title = v
+        #防止被封IP
+        stop = random.randint(1, 5)
+        print 'sleep:',stop
+        time.sleep(stop)
+
+    now = time.time()
+    day = time.strftime("%Y-%m-%d", time.localtime(now))
+    title ='article_' +kind_title+'_' +day + '.txt'
+    print 'file:',title
+    f = open(title, 'w')
+    for line,v in temp.items():
+        if( len(line) > 0):
+            f.write(line+'\n')
+            f.flush()
+    print 'get url:',url
 
 #sudo pip install BeautifulSoup4 lxml
     while True:

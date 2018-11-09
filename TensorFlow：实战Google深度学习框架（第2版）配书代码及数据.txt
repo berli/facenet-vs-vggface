@@ -1,0 +1,5 @@
+配书所需代码：
+https://github.com/caicloud/tensorflow-tutorial/tree/master/Deep_Learning_with_TensorFlow/1.4.0
+
+代码要用到的数据：
+https://github.com/caicloud/tensorflow-tutorial/tree/master/Deep_Learning_with_TensorFlow/datasets
