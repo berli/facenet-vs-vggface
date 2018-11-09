@@ -48,8 +48,10 @@ def main(_):
           cluster=cluster)):
           global_step = tf.Variable(0, name='global_step', trainable=False)
 
-          input = tf.placeholder(shape=[1,1], dtype=tf.float32)
-          label = tf.placeholder(shape=[1], dtype=tf.float32)
+          #input = tf.placeholder(shape=[1,1], dtype=tf.float32)
+          #label = tf.placeholder(shape=[1], dtype=tf.float32)
+          input = tf.placeholder_with_default(input =[[0.122515]], shape=[1,1])
+          label = tf.placeholder_with_default(input = [1.0], shape=[1])
 
           weight = tf.get_variable(name = "weight", shape=[1,1], dtype = tf.float32, initializer=tf.random_normal_initializer())
           biase  = tf.get_variable(name = "biase", shape = [1,1], dtype = tf.float32, initializer=tf.random_normal_initializer())
