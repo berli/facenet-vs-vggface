@@ -33,9 +33,14 @@ def _setDNSCache():
  
 
 def get_article_link(url):
-
-    response = urllib2.urlopen(url)
-    res = response.read()
+    try:
+        response = urllib2.urlopen(url)
+        res = response.read()
+    except HTTPError as e:
+        content = e.read()
+        print('exception:',content)
+        print('sleep 10s....')
+        time.sleep(10)
     bsObj = BeautifulSoup(res, 'html.parser')
     links = bsObj.find_all('a')
     articles = {}
