@@ -38,5 +38,6 @@ cd ffmpeg-4.0/
 git clone https://github.com/opencv/opencv.git
 
 #for python
+sudo apt-get update;sudo apt-get install python-pip python3-dev python3
 sudo pip install --upgrade pip
 sudo pip install pandas numpy matplotlib matplotlib tensorflow sklearn requests
