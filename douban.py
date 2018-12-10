@@ -83,7 +83,15 @@ def get_article_link(url):
 
 def get_article(url):
 
-    response = urllib2.urlopen(url)
+    try:
+        response = urllib2.urlopen(url)
+        #res = response.read()
+    except HTTPError as e:
+        content = e.read()
+        print('exception:',content)
+        print('sleep 10s....')
+        time.sleep(10)
+        return
     bsObj = BeautifulSoup(response, 'lxml')
     line = ''
     for read in  bsObj.find_all('h1', class_='article-title'):
