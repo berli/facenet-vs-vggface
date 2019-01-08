@@ -10,25 +10,24 @@ import psutil
 import signal
 import time
 import os
+import sys
 
-def specific_pid():
+def specific_pid(p_name_list):
     pids = psutil.pids()
 
-    pid_list = {}
+    pname_list = {}
+    for p in p_name_list:
+        pname_list[p] = False;
     for pid in pids:
         p = psutil.Process(pid)
         args = p.cmdline()
         #print 'args:',args
         cluster_flags = 0
         for arg in args:
-            if(arg.find('multi_layer_cluster.py') != -1 ):
-                cluster_flags = cluster_flags + 1
-            if( arg.find('--job_name=worker') != -1):
-                cluster_flags = cluster_flags + 1
-            if( cluster_flags == 2):
-                pid_list[pid] = p.name()
-                print("pid-%d,pname-%s, arg:%s" %(pid,p.name(), p.cmdline() ))
-                break;
+            for p in p_name_list:
+                if(arg.find(p) != -1 ):
+                    pname_list[p] = True;
+                    break;
 
     return pid_list;
 
@@ -56,3 +55,5 @@ while True:
         print('cluster work fine:',last_pid_list)
 
     time.sleep(600)
+
+if __name__ == '__main__':
