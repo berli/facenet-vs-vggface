@@ -1,1 +1,5 @@
 bazel build --jobs 15 --config=opt --config=cuda //tensorflow/tools/pip_package:build_pip_package 
+# 编译生成python whl包
+bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg
+最后，安装生成的包
+sudo pip install /tmp/tensorflow_pkg/tensorflow-1.2.0-py2-none-any.whl
