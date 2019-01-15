@@ -134,7 +134,7 @@ def conv4_pool(filters=18, kernel_size=2, strides=1):
         #print(conv)
         print('len(conv):', np.size(conv))
 
-#conv4_pool(filters=4, kernel_size=3, strides=2)
+conv4_pool(filters=4, kernel_size=3, strides=2)
 
 print('---------- example 6 max pool ----------------')
 def conv4(filters=2, kernel_size=3, strides=2):
@@ -195,10 +195,10 @@ def conv4(filters=2, kernel_size=3, strides=2):
         tf.global_variables_initializer().run()
         # 输出卷积值
         conv = sess.run(conv3, feed_dict = {input_b:b})
-        print(conv)
-        print('len(conv):', np.size(conv))
+        #print(conv)
+        print('len(conv3):', np.size(conv))
         conv = sess.run(conv4, feed_dict = {input_b:b})
-        print(conv)
-        print('len(conv):', np.size(conv))
+        #print(conv)
+        print('len(conv4):', np.size(conv))
 
-#conv4(filters=2, kernel_size=3, strides=2)
+conv4(filters=2, kernel_size=3, strides=2)
