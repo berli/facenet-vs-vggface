@@ -13,7 +13,7 @@ lstm = []
 lstm_cnn = []
 
 get_value(lstm, 'infer')
-get_value(lstm_cnn, 'infer_cnn')
+#get_value(lstm_cnn, 'infer_cnn')
 
 print 'lstm:',lstm
 print 'type(lstm):',type(lstm)
@@ -25,9 +25,10 @@ y = np.array(lstm)
 y_cnn = np.array(lstm_cnn)
 #plt.axis([-576, 576, -np.max(lstm), np.max(lstm)])
 #plt.axis([0, 576,-2, 576])
+plt.figure(figsize=(10, 5))
 print 'type(x):',type(x)
 plt.plot(x, y, color="r", linestyle="-", linewidth=1)
-plt.plot(x, y_cnn, color="b", linestyle="-", linewidth=1)
+#plt.plot(x, y_cnn, color="b", linestyle="-", linewidth=1)
 plt.show()
 
 
