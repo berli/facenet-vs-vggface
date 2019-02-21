@@ -7,9 +7,9 @@ ysoft = tf.nn.softmax(y)
 cross_entropy = -tf.reduce_sum(y_*tf.log(ysoft))  
  
 #do cross_entropy just one step  
-cross_entropy2=tf.reduce_sum(tf.nn.softmax_cross_entropy_with_logits_v2(logits = y, labels = y_))
+cross_entropy2=tf.reduce_sum(tf.nn.softmax_cross_entropy_with_logits(logits = y, labels = y_))
  
-cross_entropy_loss=tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(logits = y, labels = y_))
+cross_entropy_loss=tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits = y, labels = y_))
  
 with tf.Session() as sess:   
     print("step1:softmax result=")  

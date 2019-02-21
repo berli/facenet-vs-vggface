@@ -17,7 +17,7 @@ def get_ip():
 if __name__ == '__main__':
 
     last_ip = "";
-    f = open('log', 'w')
+    f = open('log', 'a+')
 
     while True:
         ip = get_ip();
