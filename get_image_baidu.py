@@ -45,9 +45,9 @@ def down_pic(pic_urls, keywords):
  
  
 if __name__ == '__main__':
-    keyword = '刘亦菲'  # 关键词, 改为你想输入的词即可, 相当于在百度图片里搜索一样
     keyword = '孙艺珍'  # 关键词, 改为你想输入的词即可, 相当于在百度图片里搜索一样
     keyword = '章泽天'  # 关键词, 改为你想输入的词即可, 相当于在百度图片里搜索一样
+    keyword = '刘亦菲 高清'  # 关键词, 改为你想输入的词即可, 相当于在百度图片里搜索一样
     page_begin=0
     page_number=30
     image_number=20
