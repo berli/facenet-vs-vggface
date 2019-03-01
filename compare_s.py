@@ -53,8 +53,6 @@ def main(args):
             embeddings = tf.get_default_graph().get_tensor_by_name("embeddings:0")
             phase_train_placeholder = tf.get_default_graph().get_tensor_by_name("phase_train:0")
 
-            max_dist = 0.01 #1.06
-            min_dist = 1.06
             threshold = 1.0
             path = args.image_files_path[:args.image_files_path.rfind('/')]
             global no_face 
@@ -78,21 +76,17 @@ def main(args):
                 print('Distance matrix')
                 if( len(images) < 2):
                     continue
+                
+                min_dist = 2.001
                 for i in range(1, nrof_images):
                     dist = np.sqrt(np.sum(np.square(np.subtract(emb[0,:], emb[1,:]))))
                     print('dist:', dist)
-                    if( dist > max_dist):
-                        max_dist = dist
                     if( dist < min_dist):
                         min_dist = dist
-                    if(dist > threshold and args.is_move ):
-                        shutil.move(image, no_face+'/'+image_file)
-                        flog.write(image_file + ' dist: ' + str(dist) +'\n')
-                        flog.flush()
-                        break;
-            print('max_dist:',max_dist)
-            print('min_dist:',min_dist)
-            
+                if(min_dist > threshold and args.is_move ):
+                    shutil.move(image, no_face+'/'+image_file)
+                    flog.write(image_file + ' dist: ' + str(dist) +'\n')
+                    flog.flush()
             
 def load_and_align_data(image_paths, image_file, image_size, margin, gpu_memory_fraction):
 
