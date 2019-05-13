@@ -3,11 +3,14 @@ import tensorflow as tf
 # calculate cross_entropy 
 y  = tf.constant([[1.0, 2.0, 3.0, 4.0],[1.0, 2.0, 3.0, 4.0],[1.0, 2.0, 3.0, 4.0]])  
 y_ = tf.constant([[0.0, 0.0, 0.0, 1.0],[0.0, 0.0, 0.0, 1.0],[0.0, 0.0, 0.0, 1.0]])  
+y_s = tf.constant([[3],[3],[3]])  
 ysoft = tf.nn.softmax(y)  
 cross_entropy = -tf.reduce_sum(y_*tf.log(ysoft))  
  
 #do cross_entropy just one step  
 cross_entropy2=tf.reduce_sum(tf.nn.softmax_cross_entropy_with_logits_v2(logits = y, labels = y_))
+
+cross_entropy_sparse=tf.reduce_sum(tf.nn.sparse_cross_entropy_with_logits(logits = y, labels = y_s))
  
 cross_entropy_loss=tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(logits = y, labels = y_))
  
